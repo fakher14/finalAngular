@@ -1,0 +1,342 @@
+<div class="panel-header panel-header-lg">
+
+    <div class="container">
+        <div class="col-md-12 text-right">
+            <div class="cart_icon" routerLink="/cart">
+                <i class="fas fa-cart-plus"></i>
+                <div class="cart_value"> {{cartItem}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group no-border recherch w-25">
+        <input type="text" value="" class="form-control" [(ngModel)]="search" (keyup)="getproducts()"
+            placeholder="Search..." />
+
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="row">
+        <div class="product" *ngFor="let c of Listproduit">
+            <figure>
+                <img [src]="c.productImage.data" alt="Product Image" class="product-image">
+
+            </figure>
+
+            <div class="product-description">
+
+                <div class="info">
+                    <h1>{{ c.libelle }}</h1>
+                    <p>Code : {{ c.code }}
+                    </p>
+                </div>
+
+                <div class="price">
+                    {{ c.prixUnitaire }}
+                </div>
+
+                <div class="content">
+                    <button type="button" class="btnq" (click)="inc(c)"><i class="fa fa-plus"></i></button>
+                        <span>{{c.quantite}}</span>
+                    <button type="button" class="btnq" (click)="dec(c)"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+
+            <div class="product-sidebar">
+                <button class="buy" (click)="addCart(c)">
+                    <span>BUY ITEM</span>
+                </button>
+
+                <button class="info">
+                    <span data-bs-toggle="modal" data-bs-target="#detailes"
+                        (click)="getp(c.idProduit, c.detailProduit.dateCreation)">MORE INFO</span>
+                </button>
+
+                <button class="size">
+                    <span data-bs-toggle="modal" data-bs-target="#fourni"
+                        (click)="getfournisseurs(c.idProduit)">Fournisseurs</span>
+                </button>
+
+                <button class="colors">
+                    <span>
+                        <a href="" class="color black"></a>
+                        <a href="" class="color white"></a>
+                        <a href="" class="color red"></a>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div class="modal fade" id="detailes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">DetailsProduit</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table user-list table-responsive">
+                            <thead>
+                                <tr>
+                                    <th><span>D.Creation</span></th>
+                                    <th><span>D.LastModif</span></th>
+                                    <th>Categorie</th>
+                                    <th>Rayon</th>
+                                    <th>Stock</th>
+                                    <th>RB</th>
+                                </tr>
+                            </thead>
+
+                            <tr>
+                                <td>
+                                    {{ p9.detailProduit.dateCreation }}
+                                </td>
+                                <td>
+                                    {{ p9.detailProduit.dateDerniereModification }}
+                                </td>
+                                <td>
+                                    {{ p9.detailProduit.categorieProduit }}
+                                </td>
+                                <td>
+                                    {{ p9.rayon.idRayon }}
+                                </td>
+                                <td>
+                                    {{ p9.stock.idStock }}
+                                </td>
+                                <td>{{ revenue6 }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Annuler
+                        </button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                            Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="supprimer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            Supprimer Produit
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Êtes-vous sûr de vouloir supprimer cet produit?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Annuler
+                        </button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="oui()">
+                            Oui
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="fourni" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">ListFournisseurs</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table user-list table-responsive">
+                            <thead>
+                                <tr>
+                                    <th><span>Code</span></th>
+                                    <th><span>Libelle</span></th>
+                                </tr>
+                            </thead>
+                            <tr *ngFor="let f of listfourni">
+                                <td>
+                                    {{ f.code }}
+                                </td>
+                                <td>
+                                    {{ f.libelle }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Annuler
+                        </button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                            Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editProduct" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="id"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form [formGroup]="formProduct">
+                            <div class="mb-3">
+                                <label for="id" class="form-label">ID</label>
+                                <input type="text" class="form-control" id="id" formControlName="id" readonly />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="code" class="form-label">Code</label>
+                                <input type="text" class="form-control" id="code" formControlName="code" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="libelle" class="form-label">Libelle</label>
+                                <input type="text" class="form-control" id="libelle" formControlName="libelle" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="prix" class="form-label">Prix unitaire</label>
+                                <input type="text" class="form-control" id="prix" formControlName="prixUnitaire" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="categorieProduit" class="form-label">categorieProduit
+                                </label>
+                                <!--	<input type="text" class="form-control" id="categorieProduit" formControlName="categorieProduit">-->
+                                <select class="form-select" aria-label="Default select example"
+                                    formControlName="categorieProduit">
+                                    <option value="Alimentaire" selected>Alimentaire</option>
+
+                                    <option value="Quicaillerie">Quicaillerie</option>
+                                    <option value="Electromenager">Electromenager</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="idRayon" class="form-label">idRayon</label>
+                                <input type="text" class="form-control" id="idRayon" formControlName="idRayon" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="idStock" class="form-label">idStock</label>
+                                <input type="text" class="form-control" id="idStock" formControlName="idStock" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Annuler
+                        </button>
+                        <button type="button" class="btn btn-primary" (click)="update1()">
+                            Modifier
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter Produit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="id"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formProduct">
+                    <div class="mb-3">
+                        <label for="code1" class="form-label">Code</label>
+                        <input type="text" class="form-control" id="code1" formControlName="code" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="libelle1" class="form-label">Libelle</label>
+                        <input type="text" class="form-control" id="libelle1" formControlName="libelle" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="prix1" class="form-label">Prix unitaire</label>
+                        <input type="text" class="form-control" id="prix1" formControlName="prixUnitaire" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="categorieProduit" class="form-label">categorieProduit
+                        </label>
+                        <!--	<input type="text" class="form-control" id="categorieProduit" formControlName="categorieProduit">-->
+                        <select class="form-select" aria-label="Default select example"
+                            formControlName="categorieProduit">
+                            <option value="Alimentaire" selected>Alimentaire</option>
+
+                            <option value="Quicaillerie">Quicaillerie</option>
+                            <option value="Electromenager">Electromenager</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="idRayon" class="form-label">idRayon</label>
+                        <input type="text" class="form-control" id="idRayon" formControlName="idRayon" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="idStock" class="form-label">idStock</label>
+                        <input type="text" class="form-control" id="idStock" formControlName="idStock" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="url" class="form-label">Url Image</label>
+                        <input type="file" class="form-control" id="url" formControlName="url" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Annuler
+                </button>
+                <button type="button" class="btn btn-primary" (click)="addproduit()">
+                    Ajouter
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--assign-->
+<div class="modal fade" id="assign" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Lier Produit à un fournisseur
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formasign">
+                    <div class="mb-3">
+                        <label for="idproduit" class="form-label">idproduit</label>
+                        <input type="text" class="form-control" id="idproduit" formControlName="idproduit" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="idFournisseur" class="form-label">idFournisseur</label>
+                        <input type="text" class="form-control" id="idFournisseur" formControlName="idFournisseur" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Annuler
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="assignftop()">
+                    Assign
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,234 @@
+<div class="panel-header panel-header-lg">
+  <button
+    class="btn btn-danger buttonAdd"
+    data-bs-toggle="modal"
+    data-bs-target="#addRayon"
+  >
+    Add New Rayon
+    <i class="fas fa-cart-plus"></i>
+  </button>
+  <div class="header text-center">
+    <h2 class="title">RAYONS</h2>
+
+    <div class="img">
+      <img src="./assets/img/aragon-icon.svg" />
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-category">Liste des Rayons</h5>
+          <h4 class="card-title">Rayons disponibles</h4>
+        </div>
+        <div class="card-body">
+          <div
+            class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+          >
+            <table class="table table-hover">
+              <thead class="text-primary">
+                <th>Options</th>
+                <th>Code</th>
+                <th class="text-right">Libelle</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of listRayon; let i = index">
+                  <td>
+                    <a class="options" (click)="deleteRayon(s)"
+                      ><i class="far fa-trash-alt"></i
+                    ></a>
+                    <a
+                      class="options"
+                      (click)="updateRayon(s)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#updateStock"
+                      ><i class="fas fa-wrench"></i>
+                    </a>
+                    <a
+                      class="options"
+                      data-bs-toggle="modal"
+                      data-bs-target="#detailes"
+                      (click)="findThisOne(s)"
+                      ><i class="fas fa-info"></i>
+                    </a>
+                  </td>
+                  <td>{{ s.code }}</td>
+                  <td class="text-right">{{ s.libelle }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="addRayon"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Rayon</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="id"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addRayonForm">
+          <div class="mb-3">
+            <label for="id" class="form-label">Code</label>
+            <input
+              type="text"
+              class="form-control"
+              id="id"
+              formControlName="code"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="code" class="form-label">Libelle</label>
+            <input
+              type="text"
+              class="form-control"
+              id="code"
+              formControlName="libelle"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button type="button" class="btn btn-primary" (click)="addRayon()">
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="updateRayon"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Rayon</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="id"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateRayonForm">
+          <div class="mb-3">
+            <label for="id" class="form-label">id Rayon</label>
+            <input
+              type="text"
+              class="form-control"
+              id="id"
+              formControlName="idRayon"
+              readonly
+            />
+          </div>
+          <div class="mb-3">
+            <label for="id" class="form-label">Code</label>
+            <input
+              type="text"
+              class="form-control"
+              id="id"
+              formControlName="code"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="code" class="form-label">Libelle</label>
+            <input
+              type="text"
+              class="form-control"
+              id="code"
+              formControlName="libelle"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="update()"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="detailes"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">List Of Products</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <table class="table user-list table-responsive">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Prix</th>
+              <th>Catégorie</th>
+              <th>Libelle</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+
+          <tr *ngFor="let p of listOfProducts">
+            <td>{{ p.code }}</td>
+            <td>{{ p.prixUnitaire }}</td>
+            <td>{{ p.detailProduit.categorieProduit }}</td>
+            <td>{{ p.libelle }}</td>
+            <td>{{ p.stock.libelleStock }}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          Print
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

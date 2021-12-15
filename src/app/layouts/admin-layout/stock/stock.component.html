@@ -1,0 +1,361 @@
+<div class="panel-header panel-header-lg">
+  <div class="input-group no-border rechercheBox">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="rechercheStock"
+      (keyup)="filterStocks()"
+      placeholder="Search..."
+    />
+    <div class="input-group-append">
+      <div class="input-group-text iconRechBox">
+        <i class="now-ui-icons ui-1_zoom-bold"></i>
+      </div>
+    </div>
+  </div>
+  <button
+    class="btn btn-danger buttonAdd"
+    data-bs-toggle="modal"
+    data-bs-target="#addStock"
+  >
+    Ajouter Stock
+    <i class="fas fa-cart-plus"></i>
+  </button>
+  <div class="header text-center">
+    <h2 class="title">STOCKS</h2>
+
+    <div class="img">
+      <img src="./assets/img/aragon-icon.svg" />
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row">
+    <!--  stocks with warnings -->
+    <div *ngIf="stocksWithWarnings.length > 0" class="col-md-12">
+      <div class="card card-plain">
+        <div class="card-header">
+          <h5 class="card-category">Liste des Stocks</h5>
+          <h4 class="card-title">warnings</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="text-danger">
+                <th>Options</th>
+                <th>Quantité</th>
+                <th>Quantité minimale</th>
+                <th>Lebelle</th>
+                <th class="text-right">Catégorie</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of stocksWithWarnings">
+                  <td>
+                    <a class="options" (click)="deleteStock(s)"
+                      ><i class="far fa-trash-alt"></i
+                    ></a>
+                    <a
+                      class="options"
+                      (click)="updateStock(s)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#updateStock"
+                      ><i class="fas fa-wrench"></i>
+                    </a>
+                  </td>
+                  <td>{{ s.qte }}</td>
+                  <td>{{ s.qteMin }}</td>
+                  <td>{{ s.libelleStock }}</td>
+                  <td class="text-right">
+                    <img class="catImage" [src]="s.img" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- all stocks -->
+    <div class="col-md-12" *ngIf="listStock.length > 0">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-category">Liste des Stocks</h5>
+          <h4 class="card-title">Stocks disponibles</h4>
+        </div>
+        <div class="card-body">
+          <div
+            class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+          >
+            <table class="table table-hover">
+              <thead class="text-danger">
+                <th>Options</th>
+                <th>Quantité</th>
+                <th>Quantité minimale</th>
+                <th>Details</th>
+                <th>Lebelle</th>
+                <th class="text-right">Catégorie</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of listStock; let i = index">
+                  <td>
+                    <a class="options" (click)="deleteStock(s)"
+                      ><i class="far fa-trash-alt"></i
+                    ></a>
+                    <a
+                      class="options"
+                      (click)="updateStock(s)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#updateStock"
+                      ><i class="fas fa-wrench"></i>
+                    </a>
+                  </td>
+                  <td>{{ s.qte }}</td>
+                  <td>{{ s.qteMin }}</td>
+                  <td>
+                    <a [routerLink]="['/stocks/', s.idStock]">
+                      Go
+                      <i class="far fa-question-circle"></i>
+                    </a>
+                  </td>
+                  <td>{{ s.libelleStock }}</td>
+                  <td class="text-right">
+                    <img class="catImage" [src]="s.img" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal-->
+<!-- modal-->
+<!-- modal-->
+<!-- modal-->
+<!-- modal-->
+
+<div
+  class="modal fade"
+  id="addStock"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Stock</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="id"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addStockForm">
+          <div class="mb-3">
+            <label for="id" class="form-label">Quantity</label>
+            <input
+              type="text"
+              class="form-control"
+              id="id"
+              formControlName="qte"
+            />
+          </div>
+          <div
+            class="alert alert-danger"
+            *ngIf="add.qte.invalid && (add.qte.dirty || add.qte.touched)"
+            role="alert"
+          >
+            Quantity is required
+          </div>
+          <div class="mb-3">
+            <label for="code" class="form-label">Min Quantity</label>
+            <input
+              type="text"
+              class="form-control"
+              id="code"
+              formControlName="qteMin"
+            />
+          </div>
+          <div
+            class="alert alert-danger"
+            *ngIf="
+              add.qteMin.invalid && (add.qteMin.dirty || add.qteMin.touched)
+            "
+            role="alert"
+          >
+            Min Quantity is required
+          </div>
+          <div class="mb-3">
+            <label for="libelle" class="form-label">Label</label>
+            <input
+              type="text"
+              class="form-control"
+              id="libelle"
+              formControlName="libelleStock"
+            />
+          </div>
+          <div
+            *ngIf="
+              add.libelleStock.invalid &&
+              (add.libelleStock.dirty || add.libelleStock.touched)
+            "
+            class="alert alert-danger"
+          >
+            Label is required
+          </div>
+          <div class="mb-3">
+            <label for="categorieProduit" class="form-label"
+              >categorieProduit
+            </label>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              formControlName="categorieStock"
+            >
+              <option value="Alimentaire" selected>Alimentaire</option>
+              <option value="Quicaillerie">Quicaillerie</option>
+              <option value="Electromenager">Electromenager</option>
+            </select>
+            <div
+              class="alert alert-danger"
+              *ngIf="
+                add.categorieStock.invalid &&
+                (add.categorieStock.dirty || add.categorieStock.touched)
+              "
+              role="alert"
+            >
+              categorie Produit is required
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger addStockButton"
+          [disabled]="addStockForm.invalid"
+          (click)="addStock()"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="updateStock"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Updating</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="id"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateStockForm">
+          <div class="mb-3">
+            <label for="id" class="form-label">Stock ID</label>
+            <input
+              type="text"
+              class="form-control"
+              id="id"
+              formControlName="idStock"
+              readonly
+            />
+          </div>
+          <div class="mb-3">
+            <label for="id" class="form-label">Quantity</label>
+            <input
+              type="text"
+              class="form-control"
+              id="id"
+              formControlName="qte"
+            />
+          </div>
+          <div
+            *ngIf="upd.qte.invalid && (upd.qte.dirty || upd.qte.touched)"
+            class="alert alert-danger"
+          >
+            Quantity is required
+          </div>
+          <div class="mb-3">
+            <label for="code" class="form-label">Min Quantity</label>
+            <input
+              type="text"
+              class="form-control"
+              id="code"
+              formControlName="qteMin"
+            />
+          </div>
+          <div
+            *ngIf="
+              upd.qteMin.invalid && (upd.qteMin.dirty || upd.qteMin.touched)
+            "
+            class="alert alert-danger"
+          >
+            Min Quantity is required
+          </div>
+          <div class="mb-3">
+            <label for="libelle" class="form-label">Label</label>
+            <input
+              type="text"
+              class="form-control"
+              id="libelle"
+              formControlName="libelleStock"
+            />
+          </div>
+          <div
+            *ngIf="
+              upd.libelleStock.invalid &&
+              (upd.libelleStock.dirty || upd.libelleStock.touched)
+            "
+            class="alert alert-danger"
+          >
+            Label is required
+          </div>
+          <div class="mb-3">
+            <label for="categorieProduit" class="form-label">Categorie </label>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              formControlName="categorieStock"
+            >
+              <option value="Alimentaire" selected>Alimentaire</option>
+              <option value="Quicaillerie">Quicaillerie</option>
+              <option value="Electromenager">Electromenager</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          [disabled]="updateStockForm.invalid"
+          (click)="update()"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

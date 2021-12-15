@@ -1,0 +1,40 @@
+.recherch {
+  width: 15rem;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.imageProduit {
+  width: 14rem;
+  height:7rem ;
+  border-radius: 1rem;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+
+.card-title {
+  color: #FF3636;
+}
+
+.card {
+  border-color: #FF3636;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 2rem;
+  box-shadow:
+    0 7px 30px -10px rgba(150, 170, 180, 0.5);
+}
+
+.card-header {
+  text-align: center;
+}
+
+.card-header img {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  width: 3rem;
+}

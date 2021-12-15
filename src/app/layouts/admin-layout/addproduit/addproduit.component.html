@@ -1,0 +1,119 @@
+<div
+  class="modal fade"
+  id="addProduct"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter Produit</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="id"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="Formadd">
+          <div class="mb-3">
+            <label for="code1" class="form-label">Code</label>
+            <input
+              type="text"
+              class="form-control"
+              id="code1"
+              formControlName="code"
+            />
+           
+          </div>
+      <!--   <div class="alert alert-danger" *ngIf="formProduct.get('code').haseError('required')">champ obligatoire</div>
+    <div class="alert alert-danger" *ngIf="formProduct.get('code').errors?.pattern">Au moins 8 caractères</div>-->
+          <div class="mb-3">
+            <label for="libelle1" class="form-label">Libelle</label>
+            <input
+              type="text"
+              class="form-control"
+              id="libelle1"
+              formControlName="libelle"
+            />
+          </div>
+       <!-- <div class="alert alert-danger" *ngIf="formProduct.get('libelle').errors?.required">champ obligatoire</div>
+    <div class="alert alert-danger" *ngIf="formProduct.get('libelle').errors?.minlength">minimum 3 caractères </div>-->
+          <div class="mb-3">
+            <label for="prix1" class="form-label">Prix unitaire</label>
+            <input
+              type="text"
+              class="form-control"
+              id="prix1"
+              formControlName="prixUnitaire"
+            />
+            
+          </div>
+        <!-- <div class="alert alert-danger" *ngIf="formProduct.get('prixUnitaire').errors?.required">champ obligatoire</div>
+          <div class="alert alert-danger" *ngIf="formProduct.get('prixUnitaire').errors?.pattern">seulement des chiffres</div>-->
+          <div class="mb-3">
+            <label for="categorieProduit" class="form-label"
+              >categorieProduit
+            </label>
+            <!--	<input type="text" class="form-control" id="categorieProduit" formControlName="categorieProduit">-->
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              formControlName="categorieProduit"
+            >
+              <option value="Alimentaire" selected>Alimentaire</option>
+
+              <option value="Quicaillerie">Quicaillerie</option>
+              <option value="Electromenager">Electromenager</option>
+            </select>
+            <!-- <div class="alert alert-danger" *ngIf="formProduct.get('categorieProduit').errors?.required">champ obligatoire</div> --> -->
+          </div>
+          <div class="mb-3">
+            <label for="idRayon" class="form-label">idRayon</label>
+            <input
+              type="text"
+              class="form-control"
+              id="idRayon"
+              formControlName="idRayon"
+            />
+            
+          </div>
+          <!-- <div class="alert alert-danger" *ngIf="formProduct.get('idRayon').errors?.required">champ obligatoire</div> -->
+          <div class="mb-3">
+            <label for="idStock" class="form-label">idStock</label>
+            <input
+              type="text"
+              class="form-control"
+              id="idStock"
+              formControlName="idStock"
+            />
+          </div>
+          <!-- <div class="alert alert-danger" *ngIf="formProduct.get('idStock').errors?.required">champ obligatoire</div> -->
+          <div class="mb-3">
+            <label for="url" class="form-label">Url Image</label>
+            <input
+              type="text"
+              class="form-control"
+              id="url"
+              formControlName="url"
+            />
+          </div>
+       <!-- <div class="alert alert-danger" *ngIf="formProduct.get('url').errors?.required">Image obligatoire</div>-->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button type="button" class="btn btn-danger" (click)="addproduit()">
+          Ajouter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<button hidden #buttonAdd data-bs-toggle="modal" data-bs-target="#addProduct">
+    <i class="fas fa-cart-plus"></i>
+  </button>

@@ -1,0 +1,43 @@
+.rechercheBox {
+  width: 17rem;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+
+.rechercheBox input {
+  color: #FFF;
+}
+
+.rechercheButton {
+  cursor: pointer;
+}
+
+.iconRechBox i {
+  position: relative;
+  left: 0.5rem;
+  color: #FFF;
+}
+
+#chiffre {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.selectionAssign {
+  color: #FF3636;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.select {
+  padding: 0.5rem 1rem;
+}
+
+.message {
+  color: green;
+  font-size: 2rem;
+  position: relative;
+  margin-right: 3rem;
+}

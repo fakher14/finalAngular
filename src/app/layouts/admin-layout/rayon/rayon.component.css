@@ -1,0 +1,9 @@
+.options {
+  padding: 1rem;
+}
+
+.img {
+  width: 10rem;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}

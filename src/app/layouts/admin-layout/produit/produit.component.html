@@ -1,0 +1,659 @@
+<div class="panel-header panel-header-lg">
+   <img >
+  <div class="d-flex flex-column">
+    <button
+      class="btn btn-danger buttonAdd w-25"
+      data-bs-toggle="modal"
+      (click)="changeShowModal()"
+    >
+      Ajouter Produit
+      <i class="fas fa-cart-plus"></i>
+    </button>
+    
+
+    <button
+      class="btn btn-danger buttonAdd w-25"
+      data-bs-toggle="modal"
+      data-bs-target="#assign"
+    >
+      Assign Fournisseur
+      <i class="fas fa-user"></i>
+    </button>
+  </div>
+
+  <div class="input-group no-border recherch w-25">
+    <input
+      type="text"
+      value=""
+      class="form-control"
+      [(ngModel)]="search"
+      (keyup)="getproducts()"
+      placeholder="Search..."
+    />
+    <div class="input-group-append">
+      <div class="input-group-text">
+        <i class="now-ui-icons ui-1_zoom-bold"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-content">
+  <div class="row">
+    <div class="col-lg-4 col-md-6" *ngFor="let c of Listproduit">
+      <div class="card card-chart">
+        <div class="card-header">
+          <h5 class="card-category">Global Sales</h5>
+          <h4 class="card-title">{{ c.libelle }}</h4>
+          <div ngbDropdown>
+            <button
+              type="button"
+              class="
+                btn btn-round btn-default
+                dropdown-toggle
+                btn-simple btn-icon
+                no-caret
+              "
+              ngbDropdownToggle
+            >
+              <i class="now-ui-icons loader_gear"></i>
+            </button>
+            <div ngbDropdownMenu class="dropdown-menu-right">
+              <a
+                class="dropdown-item"
+                data-bs-toggle="modal"
+                (click)="updateproduit(c, c.idProduit)"
+                data-bs-target="#editProduct"
+              >
+                Update
+              </a>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="modal"
+                data-bs-target="#fourni"
+                (click)="getfournisseurs(c.idProduit)"
+                >fournisseurs</a
+              >
+              <a
+                class="dropdown-item"
+                data-bs-toggle="modal"
+                data-bs-target="#detailes"
+                (click)="getp(c.idProduit, c.detailProduit.dateCreation)"
+                >Some Details</a
+              >
+              <a
+              class="dropdown-item "
+              (click)="getporcentage(c.idProduit)"
+              data-bs-toggle="modal"
+              data-bs-target="#pourcen"
+              >Pourcentage par categorie</a
+            >
+
+              <a
+                class="dropdown-item text-danger"
+                (click)="deleteProduit(c)"
+                data-bs-toggle="modal"
+                data-bs-target="#supprimer"
+                >Remove Data</a
+              >
+              
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="chart-area">
+            <div class="d-flex offset-md-1 align-content-start flex-wrap">
+              <h5>Code :</h5>
+              <h5>{{ c.code }}</h5>
+            </div>
+            <div class="d-flex offset-md-1 align-content-start flex-wrap">
+              <h5>PriUnitaire :</h5>
+              <h5>{{ c.prixUnitaire }} DT</h5>
+            </div>
+            <img class="text-center imageProduit" [src]="c.url" />
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="detailes"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">DetailesProduit</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <table class="table user-list table-responsive">
+              <thead>
+                <tr>
+                  <th><span>D.Creation</span></th>
+                  <th><span>D.LastModif</span></th>
+                  <th>Categorie</th>
+                  <th>Rayon</th>
+                  <th>Stock</th>
+                  <th>Revenue Brut</th>
+                </tr>
+              </thead>
+
+              <tr>
+                <td>
+                  {{ p9.detailProduit.dateCreation }}
+                </td>
+                <td>
+                  {{ p9.detailProduit.dateDerniereModification }}
+                </td>
+                <td>
+                  {{ p9.detailProduit.categorieProduit }}
+                </td>
+                <td>
+                  {{ p9.rayon.idRayon }}
+                </td>
+                <td>
+                  {{ p9.stock.idStock }}
+                </td>
+                <td>{{ revenue6 }}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Annuler
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Print
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="supprimer"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Supprimer Produit
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Êtes-vous sûr de vouloir supprimer cet produit?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Annuler
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+              (click)="oui()"
+            >
+              Oui
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="fourni"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">ListFournisseurs</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <table class="table user-list table-responsive">
+              <thead>
+                <tr>
+                  <th><span>Code</span></th>
+                  <th><span>Libelle</span></th>
+                </tr>
+              </thead>
+              <tr *ngFor="let f of listfourni">
+                <td>
+                  {{ f.code }}
+                </td>
+                <td>
+                  {{ f.libelle }}
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Annuler
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Print
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="editProduct"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="id"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="formProduct">
+              <div class="mb-3">
+                <label for="id" class="form-label">ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="id"
+                  formControlName="id"
+                  readonly
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="code" class="form-label">Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="code"
+                  formControlName="code"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="libelle" class="form-label">Libelle</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="libelle"
+                  formControlName="libelle"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="prix" class="form-label">Prix unitaire</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="prix"
+                  formControlName="prixUnitaire"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="categorieProduit" class="form-label"
+                  >categorieProduit
+                </label>
+                <!--	<input type="text" class="form-control" id="categorieProduit" formControlName="categorieProduit">-->
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  formControlName="categorieProduit"
+                >
+                  <option value="Alimentaire" selected>Alimentaire</option>
+
+                  <option value="Quicaillerie">Quicaillerie</option>
+                  <option value="Electromenager">Electromenager</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="idRayon" class="form-label">idRayon</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="idRayon"
+                  formControlName="idRayon"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="idStock" class="form-label">idStock</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="idStock"
+                  formControlName="idStock"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal" 
+            >
+              Annuler
+            </button>
+            <button type="button" class="btn btn-danger" (click)="update1()">
+              Modifier
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="addProduct"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <!--<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter Produit</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="id"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formProduct">
+          <div class="mb-3">
+            <label for="code1" class="form-label">Code</label>
+            <input
+              type="text"
+              class="form-control"
+              id="code1"
+              formControlName="code"
+            />
+           
+          </div>
+          <div class="alert alert-danger" *ngIf="formProduct.get('code').errors?.required">champ obligatoire</div>
+    <div class="alert alert-danger" *ngIf="formProduct.get('code').errors?.pattern">Au moins 8 caractères</div>
+          <div class="mb-3">
+            <label for="libelle1" class="form-label">Libelle</label>
+            <input
+              type="text"
+              class="form-control"
+              id="libelle1"
+              formControlName="libelle"
+            />
+          </div>
+        <div class="alert alert-danger" *ngIf="formProduct.get('libelle').errors?.required">champ obligatoire</div>
+    <div class="alert alert-danger" *ngIf="formProduct.get('libelle').errors?.minlength">minimum 3 caractères </div>
+          <div class="mb-3">
+            <label for="prix1" class="form-label">Prix unitaire</label>
+            <input
+              type="text"
+              class="form-control"
+              id="prix1"
+              formControlName="prixUnitaire"
+            />
+            
+          </div>
+         <div class="alert alert-danger" *ngIf="formProduct.get('prixUnitaire').errors?.required">champ obligatoire</div>
+          <div class="alert alert-danger" *ngIf="formProduct.get('prixUnitaire').errors?.pattern">seulement des chiffres</div>
+          <div class="mb-3">
+            <label for="categorieProduit" class="form-label"
+              >categorieProduit
+            </label>
+            <input type="text" class="form-control" id="categorieProduit" formControlName="categorieProduit">
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              formControlName="categorieProduit"
+            >
+              <option value="Alimentaire" selected>Alimentaire</option>
+
+              <option value="Quicaillerie">Quicaillerie</option>
+              <option value="Electromenager">Electromenager</option>
+            </select>
+            <div class="alert alert-danger" *ngIf="formProduct.get('categorieProduit').errors?.required">champ obligatoire</div>
+          </div>
+          <div class="mb-3">
+            <label for="idRayon" class="form-label">idRayon</label>
+            <input
+              type="text"
+              class="form-control"
+              id="idRayon"
+              formControlName="idRayon"
+            />
+            
+          </div>
+          <div class="alert alert-danger" *ngIf="formProduct.get('idRayon').errors?.required">champ obligatoire</div>
+          <div class="mb-3">
+            <label for="idStock" class="form-label">idStock</label>
+            <input
+              type="text"
+              class="form-control"
+              id="idStock"
+              formControlName="idStock"
+            />
+          </div>
+          <div class="alert alert-danger" *ngIf="formProduct.get('idStock').errors?.required">champ obligatoire</div>
+          <div class="mb-3">
+            <label for="url" class="form-label">Url Image</label>
+            <input
+              type="text"
+              class="form-control"
+              id="url"
+              formControlName="url"
+            />
+          </div>
+       <div class="alert alert-danger" *ngIf="formProduct.get('url').errors?.required">Image obligatoire</div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button type="button" class="btn btn-danger" (click)="addproduit()">
+          Ajouter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>-->
+
+<!--assign-->
+<div
+  class="modal fade"
+  id="assign"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Lier Produit à un fournisseur
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm">
+          <div class="mb-3">
+            <label for="idproduit" class="form-label" >idproduit</label>
+            <input
+              type="text"
+              class="form-control"
+              id="idproduit"
+              name="idproduit" [(ngModel)]="idproduit" ngModel #idp="ngModel" required pattern="^[1-9][0-9]*"
+            />
+          </div>
+          <div class="alert alert-danger" *ngIf ="idp.invalid && idf.touched">
+            <div *ngIf="idp.errors?.required">IdProduit est obligatoire</div>
+            
+            <div *ngIf="idp.errors?.pattern">Contient que des chiffres</div>
+        </div>
+
+          <div class="mb-3">
+            <label for="idFournisseur" class="form-label">idFournisseur</label>
+            <input
+              type="text"
+              class="form-control"
+              id="idFournisseur" name="idfournisseur"[(ngModel)]="idfournisseur"
+              ngModel #idf="ngModel" required pattern="^[1-9][0-9]*"
+            />
+          </div>
+          <div class="alert alert-danger" *ngIf ="idf.invalid && idf.touched">
+            <div *ngIf="idf.errors?.required">IdFournisseur est obligatoire</div>
+            
+            <div *ngIf="idf.errors?.pattern">Contient que des chiffres</div>
+        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="assignftop(f)"
+        >
+          Assign
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div
+      class="modal fade"
+      id="pourcen"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Pourcentage par categorie client</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+           <!-- <ul>
+              <li *ngFor="let recipient of dict | keyvalue">
+                  {{recipient.key}}  {{recipient.value}}
+              </li>
+          </ul>-->
+          <table class="table user-list table-responsive">
+            <thead>
+              <tr>
+                <th><span>Categorie client</span></th>
+                <th><span>Pourcentage</span></th>
+              </tr>
+            </thead>
+            <tr *ngFor="let recipient of dict | keyvalue">
+              <td>
+                {{recipient.key}} 
+              </td>
+              <td>
+                {{recipient.value.toFixed(2)}} %
+              </td>
+            </tr>
+          </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Annuler
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Print
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-addproduit [addModal]="showAddModal" (emitter)="addproduit($event)" ></app-addproduit>
+

@@ -1,0 +1,59 @@
+<div class="panel-header panel-header-lg">
+  <div class="header text-center">
+    <h2 class="title">Products in stock number : {{ stockId }}</h2>
+    <p class="category">
+      Retour
+      <a routerLink="/stocks">page stocks</a>
+    </p>
+  </div>
+  <div class="input-group no-border rechercheBox">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="rechercheStock"
+      (keyup)="filterProducts()"
+      placeholder="Search..."
+    />
+    <div class="input-group-append">
+      <div class="input-group-text iconRechBox">
+        <i class="now-ui-icons ui-1_zoom-bold"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-category">Liste des Produits</h5>
+          <h4 class="card-title">Produits disponibles</h4>
+        </div>
+        <div class="card-body">
+          <div
+            class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+          >
+            <table class="table table-hover">
+              <thead class="text-primary">
+                <th>Code</th>
+                <th>Libelle</th>
+                <th>PrixUnitaire</th>
+                <th>Categorie</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of products; let i = index">
+                  <td>{{ p.code }}</td>
+                  <td>{{ p.libelle }}</td>
+                  <td>
+                    {{ p.prixUnitaire }}
+                  </td>
+                  <td>{{ p.detailProduit.categorieProduit }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
